@@ -33,15 +33,41 @@ export default function Waitlist() {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     
-    // Simulate API call
-    setTimeout(() => {
-      setPosition(Math.floor(Math.random() * 500) + 1200);
-      setIsSubmitted(true);
-    }, 800);
+    try {
+      const response = await fetch('https://formspree.io/f/xlgojzjw', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: "New Waitlist Signup",
+          form_source: "waitlist",
+          email,
+          creatorType,
+          igHandle: igHandle || 'Not provided'
+        })
+      });
+
+      if (response.ok) {
+        setPosition(Math.floor(Math.random() * 500) + 1200);
+        setIsSubmitted(true);
+      } else {
+        const data = await response.json();
+        if (Object.hasOwn(data, 'errors')) {
+          alert(data['errors'].map((error: any) => error['message']).join(', '));
+        } else {
+          alert('Oops! There was a problem submitting your form');
+        }
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('Oops! There was a problem submitting your form');
+    }
   };
 
   return (

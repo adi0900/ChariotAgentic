@@ -23,7 +23,7 @@ export default function ContactPage() {
         </div>
 
         <div className="rounded-[1.6rem] border border-white/14 bg-white/8 p-4 shadow-[0_14px_38px_rgba(7,20,43,0.16)] backdrop-blur-xl sm:p-5">
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-3 mb-6">
             {contactItems.map((item) => (
               <div key={item.label} className="rounded-[1.2rem] border border-white/12 bg-white/8 p-4">
                 <div className="text-xs font-medium uppercase tracking-[0.08em] text-white/48">{item.label}</div>
@@ -31,6 +31,53 @@ export default function ContactPage() {
               </div>
             ))}
           </div>
+
+          <form 
+            action="https://formspree.io/f/xlgojzjw" 
+            method="POST"
+            className="flex flex-col gap-4 border-t border-white/12 pt-6"
+          >
+            {/* Submission Tracking */}
+            <input type="hidden" name="_subject" value="New Contact Inquiry" />
+            <input type="hidden" name="form-source" value="contact" />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="flex flex-col gap-2">
+                <span className="text-xs font-medium uppercase tracking-[0.08em] text-white/54">Name</span>
+                <input 
+                  name="name"
+                  className="rounded-[1rem] border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40" 
+                  placeholder="Your name" 
+                  required
+                />
+              </label>
+              <label className="flex flex-col gap-2">
+                <span className="text-xs font-medium uppercase tracking-[0.08em] text-white/54">Email</span>
+                <input 
+                  type="email"
+                  name="email"
+                  className="rounded-[1rem] border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40" 
+                  placeholder="you@example.com" 
+                  required
+                />
+              </label>
+            </div>
+            <label className="flex flex-col gap-2">
+              <span className="text-xs font-medium uppercase tracking-[0.08em] text-white/54">Message</span>
+              <textarea 
+                name="message"
+                rows={4}
+                className="rounded-[1rem] border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/40" 
+                placeholder="How can we help you?" 
+                required
+              />
+            </label>
+            <button
+              type="submit"
+              className="liquid-cta mt-2 inline-flex w-full items-center justify-center rounded-[1.1rem] border border-white/14 bg-[#111111] px-6 py-3 text-sm font-medium text-white shadow-[0_12px_40px_rgba(0,0,0,0.34)] sm:text-base cursor-pointer"
+            >
+              <span className="relative z-10">Send Message</span>
+            </button>
+          </form>
         </div>
       </div>
     </section>

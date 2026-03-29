@@ -39,18 +39,27 @@ export default function Hero() {
         </p>
 
         <div className="hero-form-shell mt-4 w-full max-w-md rounded-[1.25rem] p-1.5 shadow-[0_20px_60px_rgba(8,20,43,0.22)] sm:mt-5 sm:max-w-3xl sm:rounded-[1.75rem] sm:p-2 md:mt-6 md:rounded-[2rem]">
-          <form onSubmit={scrollToWaitlist} className="flex flex-col items-stretch gap-2.5 sm:flex-row sm:items-center sm:justify-center sm:gap-3">
+          <form 
+            action="https://formspree.io/f/xlgojzjw" 
+            method="POST"
+            className="flex flex-col items-stretch gap-2.5 sm:flex-row sm:items-center sm:justify-center sm:gap-3"
+          >
+            {/* Submission Tracking */}
+            <input type="hidden" name="_subject" value="New Home Page Signup" />
+            <input type="hidden" name="form-source" value="homepage_hero" />
             <label className="hero-input-shell flex h-12 flex-1 items-center gap-2.5 rounded-[1.1rem] px-4 text-left sm:h-13 sm:gap-3 sm:rounded-[1.25rem] sm:px-5 md:h-14 md:rounded-[1.35rem]">
               <Mail className="h-4 w-4 text-white/70 sm:h-5 sm:w-5" />
               <input
                 type="email"
+                name="email"
                 placeholder="example@domain.com"
+                required
                 className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/50 sm:text-base md:text-lg"
               />
             </label>
             <button
               type="submit"
-              className="liquid-cta h-12 rounded-[1.1rem] border border-white/14 bg-[#111111] px-6 text-sm font-medium text-white shadow-[0_12px_40px_rgba(0,0,0,0.34)] transition-transform hover:-translate-y-0.5 sm:h-13 sm:rounded-[1.25rem] sm:px-7 sm:text-base md:h-14 md:rounded-[1.35rem] md:px-10 md:text-lg"
+              className="liquid-cta h-12 rounded-[1.1rem] border border-white/14 bg-[#111111] px-6 text-sm font-medium text-white shadow-[0_12px_40px_rgba(0,0,0,0.34)] transition-transform hover:-translate-y-0.5 sm:h-13 sm:rounded-[1.25rem] sm:px-7 sm:text-base md:h-14 md:rounded-[1.35rem] md:px-10 md:text-lg cursor-pointer"
             >
               <span className="relative z-10">Submit</span>
             </button>
