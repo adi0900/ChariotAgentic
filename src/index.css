@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #8b5cf6;
+  --color-primary-hover: #7c3aed;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #111827;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.mesh-gradient {
+  background-color: #d8b4fe;
+  background-image: 
+    radial-gradient(at 20% 20%, #c084fc 0px, transparent 50%),
+    radial-gradient(at 80% 10%, #a78bfa 0px, transparent 50%),
+    radial-gradient(at 90% 80%, #f472b6 0px, transparent 50%),
+    radial-gradient(at 10% 90%, #93c5fd 0px, transparent 50%),
+    radial-gradient(at 50% 50%, #e879f9 0px, transparent 50%);
+  filter: blur(60px);
+}
