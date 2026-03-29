@@ -1,52 +1,50 @@
 import React from 'react';
-import { Twitter, Instagram, Linkedin, Mail } from 'lucide-react';
 
 export default function Footer() {
+  const navItems = ['Docs', 'Contact', 'Demo'];
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="w-full py-12 px-6 md:px-12 flex flex-col items-center justify-center relative z-10 border-t border-white/10 mt-24">
-      <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-        
-        {/* Brand */}
-        <div className="flex flex-col items-center md:items-start space-y-2">
-          <span className="text-2xl font-bold text-headline tracking-tighter">
-            Chariot Agentic
-          </span>
-          <p className="text-sm text-muted">
-            The AI Content Director for Creators.
-          </p>
+    <footer className="w-full px-4 pb-6 pt-3 md:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 rounded-[2rem] border border-slate-200/90 bg-white/88 px-5 py-4 shadow-[0_18px_50px_rgba(15,23,42,0.08)] backdrop-blur-xl md:flex-row md:items-center md:justify-between md:px-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-950 shadow-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 22H22L12 2Z" fill="white" />
+            </svg>
+          </div>
+          <div className="min-w-0">
+            <div className="text-base font-semibold tracking-[-0.04em] text-slate-950">
+              Chronos
+            </div>
+            <div className="text-xs font-medium text-slate-500">
+              Product analytics for modern growth teams
+            </div>
+          </div>
         </div>
 
-        {/* Links */}
-        <div className="flex space-x-8 text-sm font-medium text-body">
-          <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-          <a href="#" className="hover:text-primary transition-colors">Terms</a>
-          <a href="#" className="hover:text-primary transition-colors">Contact</a>
-        </div>
+        <nav className="flex flex-wrap items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-50 p-1.5">
+          {navItems.map((item, index) => (
+            <a
+              key={item}
+              href="#"
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors md:px-5 ${
+                index === 0
+                  ? 'bg-white text-slate-950 shadow-[0_1px_2px_rgba(15,23,42,0.08)]'
+                  : 'text-slate-500 hover:bg-white hover:text-slate-900'
+              }`}
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
 
-        {/* Socials */}
-        <div className="flex space-x-4">
-          <a href="#" className="w-10 h-10 neu-raised rounded-full flex items-center justify-center text-muted hover:text-headline transition-colors">
-            <Twitter className="w-4 h-4" />
-          </a>
-          <a href="#" className="w-10 h-10 neu-raised rounded-full flex items-center justify-center text-muted hover:text-headline transition-colors">
-            <Instagram className="w-4 h-4" />
-          </a>
-          <a href="#" className="w-10 h-10 neu-raised rounded-full flex items-center justify-center text-muted hover:text-headline transition-colors">
-            <Linkedin className="w-4 h-4" />
-          </a>
-          <a href="#" className="w-10 h-10 neu-raised rounded-full flex items-center justify-center text-muted hover:text-headline transition-colors">
-            <Mail className="w-4 h-4" />
-          </a>
+        <div className="text-sm font-medium text-slate-500 md:text-right">
+          © {year} Chronos
         </div>
       </div>
 
-      <div className="w-full max-w-7xl mx-auto mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-muted">
         <p>© {new Date().getFullYear()} Chariot Agentic. All rights reserved.</p>
-        <div className="flex items-center space-x-2 mt-4 md:mt-0">
-          <span>Powered by</span>
-          <span className="font-bold text-headline">Anthropic Claude</span>
-        </div>
-      </div>
     </footer>
   );
 }

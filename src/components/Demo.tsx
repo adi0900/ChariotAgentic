@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ArrowRight, Sparkles, ChevronDown, ChevronUp, PlayCircle, Clock, Hash, Camera } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 const presets = [
   { label: 'Tech + Fitness', icon: '💻💪', text: 'I am a software engineer who recently got into powerlifting and wants to share my journey balancing a desk job with heavy training.' },
@@ -11,6 +8,88 @@ const presets = [
   { label: 'Student + Finance', icon: '📚💰', text: 'I am a college student majoring in finance, trying to graduate debt-free by side-hustling and investing my student loans.' },
   { label: 'Designer + Cooking', icon: '🎨🍳', text: 'I am a UI/UX designer who loves making aesthetically pleasing, complex recipes on the weekends.' },
 ];
+
+const DEMO_RESULT = {
+  niche: 'Lifestyle-Driven Creator Strategy',
+  reasoning:
+    'This sample output preserves the demo experience without depending on any external AI provider.',
+  opportunityScore: 84,
+  reels: [
+    {
+      number: 1,
+      title: 'Three layers of your story',
+      hook: 'Most creators only post the polished part and ignore the story that builds trust.',
+      type: 'Safe',
+      trendScore: 91,
+      script: {
+        hook: '0-3s: Open with the biggest misconception your audience has about your niche.',
+        body: '3-25s: Show your process, your routine, and the reason you care about the topic.',
+        cta: '25-30s: Ask viewers which part of the journey they want next.',
+      },
+      shotList: [
+        { time: '0-3s', visual: 'Direct-to-camera opener with bold text overlay.' },
+        { time: '3-15s', visual: 'Fast b-roll cuts showing work, routine, and environment.' },
+        { time: '15-25s', visual: 'Close-up details that reinforce credibility.' },
+      ],
+      audio: 'Upbeat instrumental with a clear drop at 3s.',
+      bestTime: 'Weekdays, 7:30 PM',
+      hashtags: '#creatorstrategy #contentideas #brandstory',
+      tips: ['Keep the opening line short.', 'Use subtitles for every scene.'],
+    },
+    {
+      number: 2,
+      title: 'A behind-the-scenes myth',
+      hook: 'People think this takes hours. It does not.',
+      type: 'Trendy',
+      trendScore: 86,
+      script: { hook: '', body: '', cta: '' },
+      shotList: [],
+      audio: '',
+      bestTime: '',
+      hashtags: '',
+      tips: [],
+    },
+    {
+      number: 3,
+      title: 'One habit that changed results',
+      hook: 'This one routine made my content finally consistent.',
+      type: 'Personal',
+      trendScore: 82,
+      script: { hook: '', body: '', cta: '' },
+      shotList: [],
+      audio: '',
+      bestTime: '',
+      hashtags: '',
+      tips: [],
+    },
+    {
+      number: 4,
+      title: 'What I would do from zero',
+      hook: 'If I had to restart today, this is the first video I would make.',
+      type: 'Safe',
+      trendScore: 79,
+      script: { hook: '', body: '', cta: '' },
+      shotList: [],
+      audio: '',
+      bestTime: '',
+      hashtags: '',
+      tips: [],
+    },
+    {
+      number: 5,
+      title: 'A fast audience trust builder',
+      hook: 'You do not need more gear. You need this structure.',
+      type: 'Trendy',
+      trendScore: 88,
+      script: { hook: '', body: '', cta: '' },
+      shotList: [],
+      audio: '',
+      bestTime: '',
+      hashtags: '',
+      tips: [],
+    },
+  ],
+};
 
 const SYSTEM_PROMPT = `
 You are an expert AI Content Director for social media creators (Instagram Reels/TikTok).
@@ -77,31 +156,17 @@ export default function Demo() {
     setExpandedReel(null);
 
     try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.1-pro-preview',
-        contents: input,
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-          responseMimeType: 'application/json',
-          temperature: 0.7,
-        }
-      });
+      setResult(DEMO_RESULT);
 
-      const text = response.text;
-      if (text) {
-        const parsed = JSON.parse(text);
-        setResult(parsed);
-        
-        // Animate output in
-        setTimeout(() => {
-          if (outputRef.current) {
-            gsap.fromTo(outputRef.current, 
-              { y: 50, opacity: 0 }, 
-              { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
-            );
-          }
-        }, 100);
-      }
+      setTimeout(() => {
+        if (outputRef.current) {
+          gsap.fromTo(
+            outputRef.current,
+            { y: 50, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
+          );
+        }
+      }, 100);
     } catch (error) {
       console.error('Generation failed:', error);
       alert('Failed to generate. Please try again.');

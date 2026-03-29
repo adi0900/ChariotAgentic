@@ -16,6 +16,270 @@ body {
   overflow-x: hidden;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-atmosphere {
+  background:
+    radial-gradient(circle at top, rgba(123, 192, 255, 0.28), transparent 28%),
+    radial-gradient(circle at 50% 72%, rgba(129, 210, 255, 0.24), transparent 18%),
+    linear-gradient(180deg, #123868 0%, #0f2d57 32%, #123f71 64%, #6e97c1 100%);
+}
+
+.shader-veil {
+  background:
+    radial-gradient(circle at 30% 28%, rgba(129, 193, 255, 0.08), transparent 26%),
+    radial-gradient(circle at 68% 34%, rgba(165, 213, 255, 0.07), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0));
+  mix-blend-mode: screen;
+}
+
+.shader-orb {
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.shader-orb-a {
+  top: 8%;
+  left: 14%;
+  width: 24rem;
+  height: 24rem;
+  background: radial-gradient(circle, rgba(116, 194, 255, 0.26) 0%, rgba(116, 194, 255, 0) 72%);
+  animation: shaderFloatA 15s ease-in-out infinite alternate;
+}
+
+.shader-orb-b {
+  top: 18%;
+  right: 12%;
+  width: 30rem;
+  height: 30rem;
+  background: radial-gradient(circle, rgba(191, 230, 255, 0.22) 0%, rgba(191, 230, 255, 0) 74%);
+  animation: shaderFloatB 18s ease-in-out infinite alternate;
+}
+
+.shader-orb-c {
+  bottom: -6%;
+  left: 50%;
+  width: 28rem;
+  height: 18rem;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(143, 207, 255, 0.2) 0%, rgba(143, 207, 255, 0) 72%);
+  animation: shaderFloatC 14s ease-in-out infinite alternate;
+}
+
+.shader-beam {
+  top: 12%;
+  left: 50%;
+  width: min(48rem, 72vw);
+  height: 28rem;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at center, rgba(168, 222, 255, 0.22) 0%, rgba(168, 222, 255, 0.08) 28%, rgba(168, 222, 255, 0) 70%);
+  filter: blur(50px);
+  mix-blend-mode: screen;
+  animation: shaderPulse 10s ease-in-out infinite;
+}
+
+@keyframes shaderFloatA {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4rem, 2rem, 0) scale(1.08);
+  }
+}
+
+@keyframes shaderFloatB {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3rem, 2.5rem, 0) scale(0.94);
+  }
+}
+
+@keyframes shaderFloatC {
+  from {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  to {
+    transform: translateX(-50%) translateY(-1.5rem) scale(1.08);
+  }
+}
+
+@keyframes shaderPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(-50%) scale(0.96);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shader-orb-a,
+  .shader-orb-b,
+  .shader-orb-c,
+  .shader-beam {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .shader-orb-a {
+    left: -12%;
+    top: 4%;
+    width: 15rem;
+    height: 15rem;
+  }
+
+  .shader-orb-b {
+    right: -16%;
+    top: 10%;
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .shader-orb-c {
+    width: 18rem;
+    height: 12rem;
+    bottom: -3%;
+  }
+
+  .shader-beam {
+    top: 16%;
+    width: 88vw;
+    height: 18rem;
+    filter: blur(40px);
+  }
+}
+
+.hero-noise {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.07) 0 1px, transparent 1.2px),
+    radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.06) 0 1px, transparent 1.2px);
+  background-size: 12px 12px, 18px 18px, 14px 14px;
+  mix-blend-mode: soft-light;
+}
+
+.hero-glow {
+  pointer-events: none;
+  filter: blur(68px);
+}
+
+.hero-glow-top {
+  background: radial-gradient(circle, rgba(187, 232, 255, 0.22) 0%, rgba(187, 232, 255, 0) 68%);
+}
+
+.hero-glow-bottom {
+  background: radial-gradient(circle, rgba(232, 245, 255, 0.72) 0%, rgba(232, 245, 255, 0) 72%);
+}
+
+.hero-input-shell {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 14px 40px rgba(5, 15, 35, 0.16);
+  backdrop-filter: blur(18px);
+}
+
+.hero-form-shell {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(22px);
+}
+
+.liquid-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 40%),
+    linear-gradient(180deg, #151515 0%, #0d0d0d 100%);
+  transition:
+    transform 220ms ease,
+    box-shadow 320ms ease,
+    border-color 320ms ease,
+    background-color 320ms ease;
+}
+
+.liquid-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(155, 226, 255, 0.78) 20%,
+      rgba(255, 255, 255, 0.18) 42%,
+      rgba(120, 194, 255, 0.75) 64%,
+      rgba(255, 255, 255, 0.14) 100%
+    );
+  background-size: 220% 100%;
+  opacity: 0;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: opacity 280ms ease;
+}
+
+.liquid-cta::after {
+  content: "";
+  position: absolute;
+  inset: -35%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(184, 231, 255, 0.34) 0%, rgba(184, 231, 255, 0) 62%);
+  opacity: 0;
+  transform: translateX(-38%) translateY(18%) scale(0.82);
+  transition:
+    opacity 280ms ease,
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.liquid-cta:hover,
+.liquid-cta:focus-visible {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 16px 44px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.liquid-cta:hover::before,
+.liquid-cta:focus-visible::before {
+  opacity: 1;
+  animation: liquidBorderShift 1.8s linear infinite;
+}
+
+.liquid-cta:hover::after,
+.liquid-cta:focus-visible::after {
+  opacity: 1;
+  transform: translateX(18%) translateY(-8%) scale(1.08);
+}
+
+@keyframes liquidBorderShift {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 220% 50%;
+  }
+}
+
 .mesh-gradient {
   background-color: #d8b4fe;
   background-image: 
