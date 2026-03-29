@@ -1,0 +1,7 @@
+User-agent: Twitterbot
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.chariotagentic.com/sitemap.xml
