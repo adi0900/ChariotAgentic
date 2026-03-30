@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
 
-export default function Hero() {
-  const scrollToWaitlist = (event: React.FormEvent<HTMLFormElement>) => {
+export default function Hero({ onSuccess }: { onSuccess?: (msg?: string) => void }) {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+    if (!email || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('https://formspree.io/f/xlgojzjw', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: "New Home Page Signup",
+          form_source: "homepage_hero",
+          email: email
+        })
+      });
+
+      if (response.ok) {
+        setEmail('');
+        onSuccess?.("Thanks for signing up! We've added you to our early access list.");
+      } else {
+        alert("Oops! There was a problem with your submission.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Oops! There was a problem with your submission.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -40,18 +71,16 @@ export default function Hero() {
 
         <div className="hero-form-shell mt-4 w-full max-w-md rounded-[1.25rem] p-1.5 shadow-[0_20px_60px_rgba(8,20,43,0.22)] sm:mt-5 sm:max-w-3xl sm:rounded-[1.75rem] sm:p-2 md:mt-6 md:rounded-[2rem]">
           <form 
-            action="https://formspree.io/f/xlgojzjw" 
-            method="POST"
+            onSubmit={handleSubmit}
             className="flex flex-col items-stretch gap-2.5 sm:flex-row sm:items-center sm:justify-center sm:gap-3"
           >
-            {/* Submission Tracking */}
-            <input type="hidden" name="_subject" value="New Home Page Signup" />
-            <input type="hidden" name="form-source" value="homepage_hero" />
             <label className="hero-input-shell flex h-12 flex-1 items-center gap-2.5 rounded-[1.1rem] px-4 text-left sm:h-13 sm:gap-3 sm:rounded-[1.25rem] sm:px-5 md:h-14 md:rounded-[1.35rem]">
               <Mail className="h-4 w-4 text-white/70 sm:h-5 sm:w-5" />
               <input
                 type="email"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="example@domain.com"
                 required
                 className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/50 sm:text-base md:text-lg"
@@ -59,9 +88,10 @@ export default function Hero() {
             </label>
             <button
               type="submit"
+              disabled={isSubmitting}
               className="liquid-cta h-12 rounded-[1.1rem] border border-white/14 bg-[#111111] px-6 text-sm font-medium text-white shadow-[0_12px_40px_rgba(0,0,0,0.34)] transition-transform hover:-translate-y-0.5 sm:h-13 sm:rounded-[1.25rem] sm:px-7 sm:text-base md:h-14 md:rounded-[1.35rem] md:px-10 md:text-lg cursor-pointer"
             >
-              <span className="relative z-10">Submit</span>
+              <span className="relative z-10">{isSubmitting ? 'Sending...' : 'Submit'}</span>
             </button>
           </form>
         </div>

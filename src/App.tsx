@@ -6,8 +6,17 @@ import DocsPage from './components/DocsPage';
 import ContactPage from './components/ContactPage';
 import DemoPage from './components/DemoPage';
 import FooterBar from './components/FooterBar';
+import SuccessModal from './components/SuccessModal';
 
 export default function App() {
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const triggerSuccess = (message?: string) => {
+    if (message) setSuccessMessage(message);
+    setShowSuccessModal(true);
+  };
+
   const getPageFromHash = () => {
     const hash = window.location.hash.replace('#', '').toLowerCase();
     if (hash === 'docs' || hash === 'contact' || hash === 'demo') return hash;
@@ -39,13 +48,13 @@ export default function App() {
 
   const currentPage = useMemo(() => {
     if (page === 'docs') return <DocsPage />;
-    if (page === 'contact') return <ContactPage />;
-    if (page === 'demo') return <DemoPage />;
-    return <Hero />;
-  }, [page]);
+    if (page === 'contact') return <ContactPage onSuccess={triggerSuccess} />;
+    if (page === 'demo') return <DemoPage onSuccess={triggerSuccess} />;
+    return <Hero onSuccess={triggerSuccess} />;
+  }, [page, triggerSuccess]);
 
   return (
-    <div className="hero-atmosphere relative flex h-[100svh] w-full flex-col overflow-hidden font-sans">
+    <div className="hero-atmosphere relative flex h-[100svh] w-full flex-col overflow-hidden font-sans text-white">
       <BackgroundShader />
       <div className="hero-noise pointer-events-none absolute inset-0 opacity-70"></div>
       <div className="hero-glow hero-glow-top absolute inset-x-0 top-0 h-80"></div>
@@ -57,6 +66,12 @@ export default function App() {
       <div className="relative z-10">
         <FooterBar />
       </div>
+
+      <SuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={() => setShowSuccessModal(false)} 
+        message={successMessage}
+      />
     </div>
   );
 }
