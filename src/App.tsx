@@ -54,13 +54,13 @@ export default function App() {
   }, [page, triggerSuccess]);
 
   return (
-    <div className="hero-atmosphere relative flex h-[100svh] w-full flex-col overflow-hidden font-sans text-white">
+    <div className="hero-atmosphere relative flex min-h-[100svh] w-full flex-col overflow-x-hidden font-sans text-white">
       <BackgroundShader />
       <div className="hero-noise pointer-events-none absolute inset-0 opacity-70"></div>
-      <div className="hero-glow hero-glow-top absolute inset-x-0 top-0 h-80"></div>
-      <div className="hero-glow hero-glow-bottom absolute left-1/2 top-[58%] h-[320px] w-[320px] -translate-x-1/2 md:h-[380px] md:w-[380px]"></div>
+      <div className="hero-glow hero-glow-top absolute inset-x-0 top-0 h-64 sm:h-72 md:h-80"></div>
+      <div className="hero-glow hero-glow-bottom absolute left-1/2 top-[62%] h-[260px] w-[260px] -translate-x-1/2 sm:top-[60%] sm:h-[320px] sm:w-[320px] md:top-[58%] md:h-[380px] md:w-[380px]"></div>
       <Navbar activeItem={activeItem} onNavigate={navigateTo} />
-      <main className="relative z-10 flex min-h-0 w-full flex-1 flex-col items-center">
+      <main className="relative z-10 flex w-full flex-1 flex-col items-center">
         {currentPage}
       </main>
       <div className="relative z-10">
