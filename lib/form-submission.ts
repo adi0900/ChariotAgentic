@@ -55,29 +55,31 @@ const FORM_CONFIG: Record<FormType, FormConfig> = {
 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const FALLBACK_UPSTREAM_ERROR = 'Unable to submit your request right now. Please try again in a moment.';
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
 const normalizeString = (value: unknown) => (typeof value === 'string' ? value.trim() : '');
 
-const getErrorMessage = (body: unknown, fallback: string) => {
-  if (!isObject(body)) return fallback;
+const extractMessage = (value: unknown): string | null => {
+  const asString = normalizeString(value);
+  if (asString) return asString;
 
-  const error = normalizeString(body.error);
-  if (error) return error;
-
-  if (Array.isArray(body.errors)) {
-    const messages = body.errors
-      .map((entry) => (isObject(entry) ? normalizeString(entry.message) : ''))
-      .filter(Boolean);
-
-    if (messages.length > 0) {
-      return messages.join(', ');
-    }
+  if (Array.isArray(value)) {
+    const messages = value.map(extractMessage).filter(Boolean);
+    return messages.length > 0 ? messages.join(', ') : null;
   }
 
-  return fallback;
+  if (isObject(value)) {
+    return extractMessage(value.error) || extractMessage(value.message) || extractMessage(value.errors);
+  }
+
+  return null;
+};
+
+const getErrorMessage = (body: unknown, fallback: string) => {
+  return extractMessage(body) || fallback;
 };
 
 const validateSubmission = (formType: FormType, data: Record<string, unknown>) => {
@@ -223,7 +225,7 @@ export async function submitFormRequest(
           ok: false,
           error: getErrorMessage(
             responseBody,
-            'Unable to submit your request right now. Please try again in a moment.',
+            FALLBACK_UPSTREAM_ERROR,
           ),
         },
       };

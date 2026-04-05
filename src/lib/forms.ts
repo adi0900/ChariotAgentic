@@ -15,11 +15,43 @@ type FormResponse = FormSuccess | FormFailure;
 const isFailure = (result: FormResponse | null): result is FormFailure =>
   Boolean(result && !result.ok);
 
+const FALLBACK_ERROR_MESSAGE = 'Unable to submit your request right now. Please try again shortly.';
+
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const normalizeErrorMessage = (value: unknown): string | null => {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed ? trimmed : null;
+  }
+
+  if (value instanceof Error) {
+    return normalizeErrorMessage(value.message);
+  }
+
+  if (Array.isArray(value)) {
+    const messages = value.map(normalizeErrorMessage).filter(Boolean);
+    return messages.length > 0 ? messages.join(', ') : null;
+  }
+
+  if (isObject(value)) {
+    return (
+      normalizeErrorMessage(value.error) ||
+      normalizeErrorMessage(value.message) ||
+      normalizeErrorMessage(value.errors) ||
+      null
+    );
+  }
+
+  return null;
+};
+
 export class FormSubmissionError extends Error {
   fieldErrors?: Record<string, string>;
 
-  constructor(message: string, fieldErrors?: Record<string, string>) {
-    super(message);
+  constructor(message: unknown, fieldErrors?: Record<string, string>) {
+    super(normalizeErrorMessage(message) || FALLBACK_ERROR_MESSAGE);
     this.name = 'FormSubmissionError';
     this.fieldErrors = fieldErrors;
   }
@@ -40,13 +72,11 @@ export async function submitForm(formType: FormType, data: Record<string, unknow
 
   if (!response.ok || !result || errorResult) {
     throw new FormSubmissionError(
-      errorResult?.error || 'Unable to submit your request right now. Please try again shortly.',
+      errorResult?.error || result || FALLBACK_ERROR_MESSAGE,
       errorResult?.fieldErrors,
     );
   }
 }
 
 export const getFormErrorMessage = (error: unknown) =>
-  error instanceof Error
-    ? error.message
-    : 'Unable to submit your request right now. Please try again shortly.';
+  normalizeErrorMessage(error) || FALLBACK_ERROR_MESSAGE;
