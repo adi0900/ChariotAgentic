@@ -5,24 +5,31 @@ import {getFormErrorMessage, submitForm} from '../lib/forms';
 export default function Hero({onSuccess}: {onSuccess?: (msg?: string) => void}) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRunningScraper, setIsRunningScraper] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!email || isSubmitting) return;
+    if (!email || isSubmitting || isRunningScraper) return;
 
     setIsSubmitting(true);
+    setIsRunningScraper(true);
     setErrorMessage('');
 
     try {
-      await submitForm('hero', {email});
-      setEmail('');
-      onSuccess?.("Thanks for signing up! We've added you to our early access list.");
+      submitForm('hero', {email}).catch((error) => console.error(error));
+      window.setTimeout(() => {
+        setEmail('');
+        window.history.pushState(null, '', '/dashboard/connect');
+        window.dispatchEvent(new PopStateEvent('popstate'));
+      }, 1400);
     } catch (error) {
       console.error(error);
       setErrorMessage(getFormErrorMessage(error));
-    } finally {
+      setIsRunningScraper(false);
       setIsSubmitting(false);
+    } finally {
+      if (!isRunningScraper) setIsSubmitting(false);
     }
   };
 
@@ -79,10 +86,10 @@ export default function Hero({onSuccess}: {onSuccess?: (msg?: string) => void}) 
             </label>
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="liquid-cta h-[3.2rem] shrink-0 rounded-[1.15rem] border border-white/14 bg-[#111111] px-5 text-sm font-medium text-white shadow-[0_12px_40px_rgba(0,0,0,0.34)] transition-transform hover:-translate-y-0.5 sm:h-[3.4rem] sm:min-w-[9.75rem] sm:rounded-[1.3rem] sm:px-7 sm:text-base md:h-14 md:min-w-[11rem] md:rounded-[1.35rem] md:px-10 md:text-lg cursor-pointer"
+              disabled={isSubmitting || isRunningScraper}
+              className={`liquid-cta h-[3.2rem] shrink-0 rounded-[1.15rem] border border-white/14 bg-[#111111] px-5 text-sm font-medium text-white shadow-[0_12px_40px_rgba(0,0,0,0.34)] transition-transform hover:-translate-y-0.5 sm:h-[3.4rem] sm:min-w-[9.75rem] sm:rounded-[1.3rem] sm:px-7 sm:text-base md:h-14 md:min-w-[11rem] md:rounded-[1.35rem] md:px-10 md:text-lg cursor-pointer disabled:cursor-wait ${isRunningScraper ? 'animate-pulse' : ''}`}
             >
-              <span className="relative z-10">{isSubmitting ? 'Sending...' : 'Submit'}</span>
+              <span className="relative z-10">{isRunningScraper ? 'Running Apify scraper...' : 'Submit'}</span>
             </button>
           </form>
           {errorMessage ? (
